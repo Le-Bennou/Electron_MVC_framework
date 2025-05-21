@@ -18,15 +18,5 @@ export const COMPONENTS = [
     "name": "UIConfig",
     "path": "Default\\UIConfig",
     "moduleType": "mjs"
-  },
-  {
-    "name": "CJS",
-    "path": "test\\CJS",
-    "moduleType": "cjs"
-  },
-  {
-    "name": "MJS",
-    "path": "test\\MJS",
-    "moduleType": "mjs"
   }
 ]
