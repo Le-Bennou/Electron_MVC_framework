@@ -1,0 +1,130 @@
+/* fichier css commmun à tous les composants */
+@import url("../../../Components/components.css");
+
+
+
+section#config{
+    padding:0;
+    gap:var(--size-M);
+    display:var(--uiCongig-edit-display);
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:10000000;
+    width:100%;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.3);
+    gap:0;
+    height:50px;
+}
+section#config * {
+    font-size:12px;
+}
+
+
+section#config .card{
+    display:flex;
+    flex-direction:row;
+    padding:0;
+    align-items: center;
+    justify-content: space-around;
+    margin:0;
+}
+
+section#config button{
+    margin:0;
+    padding:2px;
+}
+
+section#config .card>*{
+    margin:8px;
+}
+
+section#config .card .subField,
+section#config .card .subField{
+    display:flex;
+    flex-direction:row;
+    padding:2px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+
+
+.card{
+    padding:var(--size-M) var(--size-M) var(--size-M) var(--size-M);
+    border-radius:var(--border-radius-S);
+    font-size:var(--font-size-S);
+   
+}
+
+.justify>*{
+    margin-bottom:0;
+}
+
+.justify{
+    justify-content: space-between;
+}
+
+.flexField{
+    display:flex;
+    
+    gap:var(--size-M);
+}
+
+.gridField{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.gridField button{
+    grid-column:span 2;
+    align-self: center;
+    justify-self: center;
+   
+}
+
+.subField{
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+section#demo{
+    display:var(--uiCongig-demo-display);
+    padding:var(--size-M);
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1000;
+    
+}
+
+
+
+section.grid{
+    padding:0;
+    
+    gap:var(--size-M);
+    display:grid;
+    grid-template-columns: 3fr 2fr;
+}
+
+.bottom{
+    grid-row:2;
+    grid-column:span 2;
+}
+
+
+.backgrounds{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:var(--spacing-L);
+}
+.backgrounds hr,
+.backgrounds h1{
+    grid-column:span 6;
+}

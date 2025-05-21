@@ -1,0 +1,220 @@
+/** 
+* Mise en place du system de design
+* On change la couleur prrimaire,le font size et le ratio dans config.css
+* et ça crée automatiquement les variables css et les classes css 
+*/
+
+:root{    
+            --size-M : 1rem;
+            --size-L:calc(var(--size-M) * var(--ratio));
+            --size-XL:calc(var(--size-L) * var(--ratio));
+            --size-XXL:calc(var(--size-XL) * var(--ratio));
+            --size-S:calc(var(--size-M) / var(--ratio));
+            --size-XS:calc(var(--size-S) / var(--ratio));
+            --size-XXS:calc(var(--size-XS) / var(--ratio));
+
+            --spacing-M : 1em;
+            --spacing-L:calc(var(--spacing-M) * var(--ratio));
+            --spacing-XL:calc(var(--spacing-L) * var(--ratio));
+            --spacing-XXL:calc(var(--spacing-XL) * var(--ratio));
+            --spacing-S:calc(var(--spacing-M) / var(--ratio));
+            --spacing-XS:calc(var(--spacing-S) / var(--ratio));
+            --spacing-XXS:calc(var(--spacing-XS) / var(--ratio));
+
+            
+            --font-size-XXL : var(--size-XXL);
+            --font-size-XL : var(--size-XL);
+            --font-size-L : var(--size-L);
+            --font-size-M : var(--size-M);
+            --font-size-S : var(--size-S);
+            --font-size-XS : var(--size-XS);
+            --font-size-XXS : var(--size-XXS);
+
+            --border-radius-XXL:var(--size-XXL);
+            --border-radius-XL:var(--size-XL);
+            --border-radius-L:var(--size-L);
+            --border-radius-M:var(--size-M);
+            --border-radius-S:var(--size-S);
+            --border-radius-XS:var(--size-XS);
+            --border-radius-XXS:var(--size-XXS);
+
+            --shadow:1px 1px 3px rgba(0,0,0,0.3);
+            --bump-shadow:-1px -1px 2px rgba(0,0,0,0.3) inset,1px 1px 2px rgba(255,255,255,0.3) inset;
+            --invert-bump-shadow:1px 1px 2px rgba(0,0,0,0.3) inset,-1px -1px 2px rgba(255,255,255,0.3) inset;
+  
+            /* Drak Colors */
+            --dark-primary-h: var(--primary-hue);
+            --dark-primary-s: var(--primary-s);
+            --dark-primary-l: var(--primary-l);
+
+            --dark-primary-a0:hsl(var(--dark-primary-h),var(--dark-primary-s),var(--dark-primary-l));
+            --dark-primary-a10:hsl(var(--dark-primary-h),calc(var(--dark-primary-s) - 16%),calc(var(--dark-primary-l) + 13%));
+            --dark-primary-a20:hsl(var(--dark-primary-h),calc(var(--dark-primary-s) - 16%),calc(var(--dark-primary-l) + 20%));
+            --dark-primary-a30:hsl(var(--dark-primary-h),calc(var(--dark-primary-s) - 17%),calc(var(--dark-primary-l) + 26%));
+            --dark-primary-a40:hsl(var(--dark-primary-h),calc(var(--dark-primary-s) - 18%),calc(var(--dark-primary-l) + 31%));
+            --dark-primary-a50:hsl(var(--dark-primary-h),calc(var(--dark-primary-s) - 19%),calc(var(--dark-primary-l) + 36%));
+
+            --dark-primary-text-a0:var(--black);
+            --dark-primary-text-a10:var(--black);
+            --dark-primary-text-a20:var(--black);
+            --dark-primary-text-a30:var(--black);
+            --dark-primary-text-a40:var(--black);
+            --dark-primary-text-a50:var(--black);
+     
+            --dark-surface-h:var(--dark-primary-h);
+            --dark-surface-s: 5%;
+            --dark-surface-l: 13%;
+
+            --dark-surface-a0:hsl(var(--dark-surface-h),var(--dark-surface-s),var(--dark-surface-l));
+            --dark-surface-a10:hsl(var(--dark-surface-h),calc(var(--dark-surface-s) - 7%),calc(var(--dark-surface-l) + 8%));
+            --dark-surface-a20:hsl(var(--dark-surface-h),calc(var(--dark-surface-s) - 8%),calc(var(--dark-surface-l) + 17%));
+            --dark-surface-a30:hsl(var(--dark-surface-h),calc(var(--dark-surface-s) - 11%),calc(var(--dark-surface-l) + 26%));
+            --dark-surface-a40:hsl(var(--dark-surface-h),calc(var(--dark-surface-s) - 13%),calc(var(--dark-surface-l) + 35%));
+            --dark-surface-a50:hsl(var(--dark-surface-h),calc(var(--dark-surface-s) - 12%),calc(var(--dark-surface-l) + 45%));
+
+            --dark-surface-text-a0:var(--white);
+            --dark-surface-text-a10:var(--white);
+            --dark-surface-text-a20:var(--white);
+            --dark-surface-text-a30:var(--white);
+            --dark-surface-text-a40:var(--black);
+            --dark-surface-text-a50:var(--black);
+
+            --dark-tone-surface-h:var(--dark-primary-h);
+            --dark-tone-surface-s: 26%;
+            --dark-tone-surface-l: 17%;
+
+            --dark-tone-surface-a0:hsl(var(--dark-tone-surface-h),var(--dark-tone-surface-s),var(--dark-tone-surface-l));
+            --dark-tone-surface-a10:hsl(var(--dark-tone-surface-h),calc(var(--dark-tone-surface-s) - 7%),calc(var(--dark-tone-surface-l) + 8%));
+            --dark-tone-surface-a20:hsl(var(--dark-tone-surface-h),calc(var(--dark-tone-surface-s) - 8%),calc(var(--dark-tone-surface-l) + 17%));
+            --dark-tone-surface-a30:hsl(var(--dark-tone-surface-h),calc(var(--dark-tone-surface-s) - 11%),calc(var(--dark-tone-surface-l) + 26%));
+            --dark-tone-surface-a40:hsl(var(--dark-tone-surface-h),calc(var(--dark-tone-surface-s) - 13%),calc(var(--dark-tone-surface-l) + 35%));
+            --dark-tone-surface-a50:hsl(var(--dark-tone-surface-h),calc(var(--dark-tone-surface-s) - 12%),calc(var(--dark-tone-surface-l) + 45%));
+
+
+            --dark-tone-surface-text-a0:var(--white);
+            --dark-tone-surface-text-a10:var(--white);
+            --dark-tone-surface-text-a20:var(--white);
+            --dark-tone-surface-text-a30:var(--white);
+            --dark-tone-surface-text-a40:var(--black);
+            --dark-tone-surface-text-a50:var(--black);
+
+            /* light Colors */
+            --light-primary-h: var(--primary-hue);
+            --light-primary-s: var(--primary-s);
+            --light-primary-l:var(--primary-l);
+
+            --decreace-step : calc(var(--primary-l) / 10);
+
+            --light-primary-a0:hsl(var(--light-primary-h),var(--light-primary-s),var(--light-primary-l));
+            --light-primary-a10:hsl(var(--light-primary-h),calc(var(--light-primary-s) - 6%),calc(var(--light-primary-l) - var(--decreace-step )));
+            --light-primary-a20:hsl(var(--light-primary-h),calc(var(--light-primary-s) - 11%),calc(var(--light-primary-l) - calc(var(--decreace-step ) * 2)));
+            --light-primary-a30:hsl(var(--light-primary-h),calc(var(--light-primary-s) - 17%),calc(var(--light-primary-l) - calc(var(--decreace-step ) * 3)));
+            --light-primary-a40:hsl(var(--light-primary-h),calc(var(--light-primary-s) - 21%),calc(var(--light-primary-l) - calc(var(--decreace-step ) * 4)));
+            --light-primary-a50:hsl(var(--light-primary-h),calc(var(--light-primary-s) - 26%),calc(var(--light-primary-l) - calc(var(--decreace-step ) * 5)));
+
+            --light-primary-text-a0:var(--black);
+            --light-primary-text-a10:var(--black);
+            --light-primary-text-a20:var(--white);
+            --light-primary-text-a30:var(--white);
+            --light-primary-text-a40:var(--white);
+            --light-primary-text-a50:var(--white);
+     
+            --light-surface-h:var(--light-primary-h);
+            --light-surface-s: 15%;
+            --light-surface-l: 13%;
+
+
+            --light-surface-a0:hsl(var(--light-surface-h),0%,100%);
+            --light-surface-a10:hsl(var(--light-surface-h),0% ,94%);
+            --light-surface-a20:hsl(var(--light-surface-h),0% ,88%);
+            --light-surface-a30:hsl(var(--light-surface-h),0% ,83%);
+            --light-surface-a40:hsl(var(--light-surface-h),0% ,77%);
+            --light-surface-a50:hsl(var(--light-surface-h),0% ,71%);
+
+            --light-surface-text-a0:var(--black);
+            --light-surface-text-a10:var(--black);
+            --light-surface-text-a20:var(--black);
+            --light-surface-text-a30:var(--black);
+            --light-surface-text-a40:var(--black);
+            --light-surface-text-a50:var(--black);
+
+
+            --light-tone-surface-h:var(--light-primary-h);
+            --light-tone-surface-s: 37%;
+            --light-tone-surface-l: 96%;
+
+            --light-tone-surface-a0:hsl(var(--light-tone-surface-h),var(--light-tone-surface-s),var(--light-tone-surface-l));
+            --light-tone-surface-a10:hsl(var(--light-tone-surface-h),calc(var(--light-tone-surface-s) - 4%),calc(var(--light-tone-surface-l)  - 5%));
+            --light-tone-surface-a20:hsl(var(--light-tone-surface-h),calc(var(--light-tone-surface-s) - 10%),calc(var(--light-tone-surface-l) - 10%));
+            --light-tone-surface-a30:hsl(var(--light-tone-surface-h),calc(var(--light-tone-surface-s) - 16%),calc(var(--light-tone-surface-l) - 15%));
+            --light-tone-surface-a40:hsl(var(--light-tone-surface-h),calc(var(--light-tone-surface-s) - 22%),calc(var(--light-tone-surface-l) - 21%));
+            --light-tone-surface-a50:hsl(var(--light-tone-surface-h),calc(var(--light-tone-surface-s) - 22%),calc(var(--light-tone-surface-l) - 26%));
+
+
+            --light-tone-surface-text-a0:var(--black);
+            --light-tone-surface-text-a10:var(--black);
+            --light-tone-surface-text-a20:var(--black);
+            --light-tone-surface-text-a30:var(--black);
+            --light-tone-surface-text-a40:var(--black);
+            --light-tone-surface-text-a50:var(--black);
+
+            --bg-primary-a0 : light-dark(var(--light-primary-a0),var(--dark-primary-a0));
+            --text-primary-a0 : light-dark(var(--light-primary-text-a0),var(--dark-primary-text-a0));
+
+            --bg-primary-a10 : light-dark(var(--light-primary-a10),var(--dark-primary-a10));
+            --text-primary-a10 : light-dark(var(--light-primary-text-a10),var(--dark-primary-text-a10));
+
+            --bg-primary-a20 : light-dark(var(--light-primary-a20),var(--dark-primary-a20));
+            --text-primary-a20 : light-dark(var(--light-primary-text-a20),var(--dark-primary-text-a20));
+
+            --bg-primary-a30 : light-dark(var(--light-primary-a30),var(--dark-primary-a30));
+            --text-primary-a30 : light-dark(var(--light-primary-text-a30),var(--dark-primary-text-a30));
+
+            --bg-primary-a40 : light-dark(var(--light-primary-a40),var(--dark-primary-a40));
+            --text-primary-a40 : light-dark(var(--light-primary-text-a40),var(--dark-primary-text-a40));
+
+            --bg-primary-a50 : light-dark(var(--light-primary-a50),var(--dark-primary-a50));
+            --text-primary-a50 : light-dark(var(--light-primary-text-a50),var(--dark-primary-text-a50));
+
+
+              --bg-surface-a0 : light-dark(var(--light-surface-a0),var(--dark-surface-a0));
+            --text-surface-a0 : light-dark(var(--light-surface-text-a0),var(--dark-surface-text-a0));
+
+            --bg-surface-a10 : light-dark(var(--light-surface-a10),var(--dark-surface-a10));
+            --text-surface-a10 : light-dark(var(--light-surface-text-a10),var(--dark-surface-text-a10));
+
+            --bg-surface-a20 : light-dark(var(--light-surface-a20),var(--dark-surface-a20));
+            --text-surface-a20 : light-dark(var(--light-surface-text-a20),var(--dark-surface-text-a20));
+
+            --bg-surface-a30 : light-dark(var(--light-surface-a30),var(--dark-surface-a30));
+            --text-surface-a30 : light-dark(var(--light-surface-text-a30),var(--dark-surface-text-a30));
+
+            --bg-surface-a40 : light-dark(var(--light-surface-a40),var(--dark-surface-a40));
+            --text-surface-a40 : light-dark(var(--light-surface-text-a40),var(--dark-surface-text-a40));
+
+            --bg-surface-a50 : light-dark(var(--light-surface-a50),var(--dark-surface-a50));
+            --text-surface-a50 : light-dark(var(--light-surface-text-a50),var(--dark-surface-text-a50));
+
+
+
+              --bg-tone-surface-a0 : light-dark(var(--light-tone-surface-a0),var(--dark-tone-surface-a0));
+            --text-tone-surface-a0 : light-dark(var(--light-tone-surface-text-a0),var(--dark-tone-surface-text-a0));
+
+            --bg-tone-surface-a10 : light-dark(var(--light-tone-surface-a10),var(--dark-tone-surface-a10));
+            --text-tone-surface-a10 : light-dark(var(--light-tone-surface-text-a10),var(--dark-tone-surface-text-a10));
+
+            --bg-tone-surface-a20 : light-dark(var(--light-tone-surface-a20),var(--dark-tone-surface-a20));
+            --text-tone-surface-a20 : light-dark(var(--light-tone-surface-text-a20),var(--dark-tone-surface-text-a20));
+
+            --bg-tone-surface-a30 : light-dark(var(--light-tone-surface-a30),var(--dark-tone-surface-a30));
+            --text-tone-surface-a30 : light-dark(var(--light-tone-surface-text-a30),var(--dark-tone-surface-text-a30));
+
+            --bg-tone-surface-a40 : light-dark(var(--light-tone-surface-a40),var(--dark-tone-surface-a40));
+            --text-tone-surface-a40 : light-dark(var(--light-tone-surface-text-a40),var(--dark-tone-surface-text-a40));
+
+            --bg-tone-surface-a50 : light-dark(var(--light-tone-surface-a50),var(--dark-tone-surface-a50));
+            --text-tone-surface-a50 : light-dark(var(--light-tone-surface-text-a50),var(--dark-tone-surface-text-a50));
+
+            --colored:light-dark(var(--black),var(--white));
+           
+        }

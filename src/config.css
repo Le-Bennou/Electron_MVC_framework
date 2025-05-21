@@ -1,0 +1,27 @@
+
+/* Gestion de la config par UI config */
+/*$UIConfig$*/
+                :root{
+                  color-scheme:dark;
+
+                  --ratio:1.6;
+                  font-size:20px;
+
+                  --primary-hue:214;
+                  --primary-s:92%;
+                  --primary-l:46%;
+
+                  /*spécifique au composant UIConfig*/
+                  /*$UIConfig_displays$*/
+                --uiCongig-edit-display:none;
+                --uiCongig-demo-display:none;
+             /*$/UIConfig_displays$*/
+            }/*$/UIConfig$*/
+
+
+/* Surchage personnelle*/
+:root{
+    --font-family:"Quicksand";
+    --white:#dadada;
+    --black:#222222;
+}

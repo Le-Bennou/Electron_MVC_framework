@@ -1,0 +1,21 @@
+/* fichier css commmun à tous les composants */
+@import url("../../../Components/components.css");
+
+:host{
+    display:block;
+    padding:var(--spacing-M);
+}
+
+h1{
+    text-align:center;
+}
+
+
+section{
+    background:url('image/HelloWorld.png') no-repeat center center;
+    background-size:contain;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}

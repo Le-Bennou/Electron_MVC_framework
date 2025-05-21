@@ -1,0 +1,9 @@
+/* fichier css commmun à tous les composants */
+@import url("../../../Components/components.css");
+
+
+/*placeholder*/
+:host{
+    display:block;
+    outline:1px dashed rgba(0,0,0,0.3);
+}
