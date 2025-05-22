@@ -1,7 +1,30 @@
 import {COMPONENTS} from './componentsList.js';
 import { PREFIX } from '../../../config.js';
 
+const allHandler = {
+	set: (obj, prop, val) => {
+		obj.forEach(o => {
+			o[prop] = val;
+		});
+         return true
+	},
+	get: (obj, prop) => {
+		let os = [];
+		obj.forEach(o => {
+            o = new Proxy(o, elementHandler)
+            if(o[prop]){
+                os.push(o[prop]);
+            }
+		});
+		return new Proxy(os, allHandler);
+	}
+};
 
+Object.defineProperty(NodeList.prototype, 'all', {
+	get: function() {
+		return new Proxy(this, allHandler);
+	},
+});
 
 COMPONENTS.forEach(async component => {
     const {name,path} = component;
