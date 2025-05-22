@@ -107,7 +107,11 @@ exports.WindowHandler = class WindowHandler{
 
         try {
             const module = require(`../../Components/${componentPath}/M_${componentName}.${moduleType}`);
-            this.#models[componentId] = new module[`${componentName}_Model`](componentId,win);
+            this.#models[componentId] = {}
+            this.#models[componentId].module = new module[`${componentName}_Model`](componentId,win);
+            this.#models[componentId].path  = componentPath
+            this.#models[componentId].name = componentName
+            this.#models[componentId].moduleType =moduleType
             win.webContents.send('attach-model-ok', componentId);
         } catch (error) {
             win.webContents.send('attach-model-error', componentId, error);
@@ -127,7 +131,7 @@ exports.WindowHandler = class WindowHandler{
     #handleCallingModel (event,componentId, functionName,callId, args) {
         const webContents = event.sender
         const win = BrowserWindow.fromWebContents(webContents)
-        const model = this.#models[componentId]
+        const model = this.#models[componentId].module
          try{
             const result = model[functionName](...args)
             if(result && result.then){
@@ -179,14 +183,14 @@ exports.WindowHandler = class WindowHandler{
     #handleReloadeRenderer(){
         // Décharger tous les modèles
         for (const componentId in this.#models) {
-            if (this.#models[componentId].destroy) {
-                this.#models[componentId].destroy();
-            }
-            
-            // Trouver et supprimer le module du cache require
+          
+          // Trouver et supprimer le module du cache require
             const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
             if (require.cache[modelPath]) {
                 delete require.cache[modelPath];
+            }
+              if (this.#models[componentId].destroy) {
+                this.#models[componentId].destroy();
             }
             
             delete this.#models[componentId];
