@@ -74,7 +74,7 @@ exports.WindowHandler = class WindowHandler{
 
         this.#mainWindow.loadFile(this.#indexHTMLPath)
 
-        if(this.#windowOptions2.maximize){
+        if(this.#windowOptions2 && this.#windowOptions2.maximize){
             this.#mainWindow.maximize()
         }  
     }
