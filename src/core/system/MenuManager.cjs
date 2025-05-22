@@ -68,17 +68,42 @@ exports.MenuManager = class MenuManager{
             
             if (existing) {
                 if (item.submenu) {
-                    item.submenu.forEach(sm => {
-                        existing.submenu.append(new MenuItem(sm))
-                    })
-                }
-            } else {
-                if (!menuItemTemplate.submenu) menuItemTemplate.submenu = []
-                this.#menuInstance.append(new MenuItem(menuItemTemplate))
+                    // Trier les sous-menus si ils ont un ordre défini
+                const sortedSubmenu = item.submenu.sort((a, b) => {
+                    const orderA = a.order !== undefined ? a.order : 1000;
+                    const orderB = b.order !== undefined ? b.order : 1000;
+                    return orderA - orderB;
+                });
+                
+                // Ajouter les sous-menus triés
+                sortedSubmenu.forEach(sm => {
+                    // Retirer la propriété order du sous-menu
+                    const { order: submenuOrder, ...submenuTemplate } = sm;
+                    existing.submenu.append(new MenuItem(submenuTemplate))
+                });
             }
+        } else {
+            if (!menuItemTemplate.submenu) {
+                menuItemTemplate.submenu = []
+            } else {
+                // Trier les sous-menus du nouveau menu
+                menuItemTemplate.submenu.sort((a, b) => {
+                    const orderA = a.order !== undefined ? a.order : 1000;
+                    const orderB = b.order !== undefined ? b.order : 1000;
+                    return orderA - orderB;
+                });
+                
+                // Retirer la propriété order de chaque sous-menu
+                menuItemTemplate.submenu = menuItemTemplate.submenu.map(sm => {
+                    const { order: submenuOrder, ...submenuTemplate } = sm;
+                    return submenuTemplate;
+                });
+            }
+            this.#menuInstance.append(new MenuItem(menuItemTemplate))
+        }
         })
 
-        Menu.setApplicationMenu(this.#menuInstance)
+    Menu.setApplicationMenu(this.#menuInstance)
     }
 
     /**
