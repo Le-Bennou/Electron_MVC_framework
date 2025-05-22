@@ -52,6 +52,17 @@ function scanComponentsFolder(dirPath) {
         if (hasFiles &&  path.basename(dirPath)!="Components") {
             //donner à modulType la valeur en fonction de l'extention du fichier M_Component
             const files = fs.readdirSync(dirPath)
+
+             let hasController = false
+
+            files.forEach(file => {
+                if (file.startsWith('C_') && file.endsWith('.js')) {
+                    hasController = true
+                }
+            })
+            if(!hasController) return //s'il n'y a pas de controller, c'est que ce n'est pas un composant
+
+
             let mType = "cjs"
             files.forEach(file => {
                 if (file.startsWith('M_') && file.endsWith('.mjs')) {
