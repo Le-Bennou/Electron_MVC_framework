@@ -174,7 +174,7 @@ input:focus{
 }
 
 label{
-    margin:0 var(--spacinq-S);
+    margin:var(--spacinq-S);
     font-size:var(--font-size-M);
 }
 
