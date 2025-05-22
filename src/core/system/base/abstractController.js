@@ -175,10 +175,10 @@ export class abstractController extends HTMLElement {
           destinataires: infos.destinataires,
           sender: {
             reponse: (...args) => {
-              resolve(args)
+              resolve(...args)
             },
-            error:(...args) =>{
-              reject(args)
+            error: (...args) => {
+              reject(...args)
             }
           }
         }
