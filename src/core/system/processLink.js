@@ -17,6 +17,8 @@ ipcRenderer.on('calling-rootFunction', (_, eventName) => {
     }
 })
 
+
+let countEvent = 12
 contextBridge.exposeInMainWorld('electronAPI', {
   attachModel: (componentName,componentId) => {
     return new Promise((resolve, reject) => {
@@ -26,6 +28,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
             if (responseId === componentId) {
                 ipcRenderer.removeListener('attach-model-ok', responseHandler);
                 ipcRenderer.removeListener('attach-model-error', errorHandler);
+                countEvent -= 2
                 resolve();
             }
         };
@@ -34,10 +37,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
             if (responseId === componentId) {
                 ipcRenderer.removeListener('attach-model-ok', responseHandler);
                 ipcRenderer.removeListener('attach-model-error', errorHandler);
+                countEvent -= 2
                 reject(error);
             }
         };
-        
+        countEvent += 2
+
+        ipcRenderer.setMaxListeners(countEvent)
         ipcRenderer.on('attach-model-ok', responseHandler);
         ipcRenderer.on('attach-model-error', errorHandler);
     })
