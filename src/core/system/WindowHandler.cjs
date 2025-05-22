@@ -103,17 +103,15 @@ exports.WindowHandler = class WindowHandler{
             win.webContents.send('attach-model-ok', componentId);
             return
         }
-        console.log('atcher model',componentName,componentId)
 
-       
-        import(`./../../Components/${componentPath}/M_${componentName}.${moduleType}`)
-            .then(module => {
-                this.#models[componentId] =new module[`${componentName}_Model`](componentId,win)
-                win.webContents.send('attach-model-ok', componentId);
-            })
-             .catch(error => {
-                win.webContents.send('attach-model-error', componentId, error);
-            });
+
+        try {
+            const module = require(`../../Components/${componentPath}/M_${componentName}.${moduleType}`);
+            this.#models[componentId] = new module[`${componentName}_Model`](componentId,win);
+            win.webContents.send('attach-model-ok', componentId);
+        } catch (error) {
+            win.webContents.send('attach-model-error', componentId, error);
+        }
     }
 
     /**
@@ -179,7 +177,22 @@ exports.WindowHandler = class WindowHandler{
      * @memberof WindowHandler
      */
     #handleReloadeRenderer(){
-        //TODO vider les models chargées (tester de renommer lefichier en .cjs pour utiliser require)
+        // Décharger tous les modèles
+        for (const componentId in this.#models) {
+            if (this.#models[componentId].destroy) {
+                this.#models[componentId].destroy();
+            }
+            
+            // Trouver et supprimer le module du cache require
+            const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
+            if (require.cache[modelPath]) {
+                delete require.cache[modelPath];
+            }
+            
+            delete this.#models[componentId];
+        }
+        this.#models = {};
+        
         this.#menuManager.reset();
     }
 }
