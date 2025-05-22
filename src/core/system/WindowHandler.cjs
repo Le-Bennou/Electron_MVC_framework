@@ -194,11 +194,11 @@ exports.WindowHandler = class WindowHandler{
                 if (require.cache[modelPath]) {
                     // Décharger aussi les dépendances du module
                     const module = require.cache[modelPath];
-                    if (module.children) {
+                   /* if (module.children) {
                         module.children.forEach(child => {
                             delete require.cache[child.id];
                         });
-                    }
+                    }*/
                     delete require.cache[modelPath];
                 }
             } catch (e) {
