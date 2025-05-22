@@ -185,41 +185,9 @@ exports.WindowHandler = class WindowHandler{
      * @memberof WindowHandler
      */
     #handleReloadeRenderer(){
-        for (const componentId in this.#models) {
-            if (this.#models[componentId].module && this.#models[componentId].module.destroy) {
-                this.#models[componentId].module.destroy();
-            }
-            
-            try {
-                const modelPath = this.#models[componentId].fullPath;
-                if (require.cache[modelPath]) {
-                    const module = require.cache[modelPath];
-                    if (module.children) {
-                        module.children.forEach(child => {
-                            if (!child.path.includes('node_modules')) {
-                                delete require.cache[child.id];
-                            }
-                        });
-                    }
-                    delete require.cache[modelPath];
-                }
-            } catch (e) {
-                console.error(`Erreur lors du déchargement du module ${componentId}:`, e);
-            }
-            
-            delete this.#models[componentId];
-        }
+        //TODO: reload des model, pb= <les solution testées entraine la perte du chemin require('electron')
         
-        this.#models = {};
         this.#menuManager.reset();
-        
-        // Force le garbage collector si disponible
-        if (global.gc) {
-            try {
-                global.gc();
-            } catch (e) {
-                console.warn('Garbage collection failed:', e);
-            }
-        }
+    
     }
 }
