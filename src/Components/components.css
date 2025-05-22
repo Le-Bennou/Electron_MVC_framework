@@ -173,6 +173,11 @@ input:focus{
     outline:1px solid var(--colored)
 }
 
+label{
+    margin:0 var(--spacinq-S);
+    font-size:var(--font-size-M);
+}
+
 /* ========================= les text ================================*/
 
 h1 {
