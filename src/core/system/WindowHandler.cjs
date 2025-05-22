@@ -183,20 +183,41 @@ exports.WindowHandler = class WindowHandler{
     #handleReloadeRenderer(){
         // Décharger tous les modèles
         for (const componentId in this.#models) {
-          
-          // Trouver et supprimer le module du cache require
-            const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
-            if (require.cache[modelPath]) {
-                delete require.cache[modelPath];
+            // Appeler destroy sur l'instance si elle existe
+            if (this.#models[componentId].module && this.#models[componentId].module.destroy) {
+                this.#models[componentId].module.destroy();
             }
-              if (this.#models[componentId].destroy) {
-                this.#models[componentId].destroy();
+            
+            try {
+                // Construire le chemin du module et le décharger du cache
+                const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
+                if (require.cache[modelPath]) {
+                    // Décharger aussi les dépendances du module
+                    const module = require.cache[modelPath];
+                    if (module.children) {
+                        module.children.forEach(child => {
+                            delete require.cache[child.id];
+                        });
+                    }
+                    delete require.cache[modelPath];
+                }
+            } catch (e) {
+                console.error(`Erreur lors du déchargement du module ${componentId}:`, e);
             }
             
             delete this.#models[componentId];
         }
-        this.#models = {};
         
+        this.#models = {};
         this.#menuManager.reset();
+        
+        // Force le garbage collector si disponible
+        if (global.gc) {
+            try {
+                global.gc();
+            } catch (e) {
+                console.warn('Garbage collection failed:', e);
+            }
+        }
     }
 }
