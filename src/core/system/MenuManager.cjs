@@ -53,55 +53,45 @@ exports.MenuManager = class MenuManager{
      * @memberof MenuManager
      */
     #rebuildMenu() {
-        // Trier les items par ordre
-        const sortedItems = this.#menuItems.sort((a, b) => a.order - b.order)
+        //parcourir this.#menuItem, si this.#menuItem[x] == this.#menuItem[y] fusionner leur submenu
+        const mergedMenuItems = this.#menuItems.reduce((acc, item) => {
+            const existingItem = acc.find(i => i.label === item.label)
+            if (existingItem) {
+                // Fusionner les sous-menus
 
-        // Créer un nouveau menu
-        this.#createMenuInstance()
-
-        // Ajouter les items triés
-        sortedItems.forEach(item => {
-            // Retirer la propriété order avant de créer le MenuItem
-            const { order, ...menuItemTemplate } = item
-            
-            let existing = this.#menuInstance.items.find(mi => mi.label === item.label)
-            
-            if (existing) {
-                if (item.submenu) {
-                    // Trier les sous-menus si ils ont un ordre défini
-                const sortedSubmenu = item.submenu.sort((a, b) => {
-                    const orderA = a.order !== undefined ? a.order : 1000;
-                    const orderB = b.order !== undefined ? b.order : 1000;
-                    return orderA - orderB;
-                });
+                existingItem.order = existingItem.order || 1000000
+                item.order = item.order || 1000000
                 
-                // Ajouter les sous-menus triés
-                sortedSubmenu.forEach(sm => {
-                    // Retirer la propriété order du sous-menu
-                    const { order: submenuOrder, ...submenuTemplate } = sm;
-                    existing.submenu.append(new MenuItem(submenuTemplate))
-                });
-            }
-        } else {
-            if (!menuItemTemplate.submenu) {
-                menuItemTemplate.submenu = []
+                //si order n'exitate pas dans l'un d'entre eux mais dans l'autre
+                if (existingItem.order !== item.order) {
+                    existingItem.order = Math.min(existingItem.order, item.order)
+                }
+
+                existingItem.submenu.push(...item.submenu)
+            
             } else {
-                // Trier les sous-menus du nouveau menu
-                menuItemTemplate.submenu.sort((a, b) => {
-                    const orderA = a.order !== undefined ? a.order : 1000;
-                    const orderB = b.order !== undefined ? b.order : 1000;
-                    return orderA - orderB;
-                });
-                
-                // Retirer la propriété order de chaque sous-menu
-                menuItemTemplate.submenu = menuItemTemplate.submenu.map(sm => {
-                    const { order: submenuOrder, ...submenuTemplate } = sm;
-                    return submenuTemplate;
-                });
+                acc.push(item)
             }
-            this.#menuInstance.append(new MenuItem(menuItemTemplate))
-        }
+            return acc
+        }, [])
+
+       //tri les menus par ordre croissant
+        mergedMenuItems.sort((a, b) => {
+            if (a.order === b.order) return 0
+            return a.order < b.order ? -1 : 1
         })
+        
+        //tir les submenu
+        mergedMenuItems.forEach(item => {
+            if (item.submenu) {
+                item.submenu.sort((a, b) => {
+                    if (a.order === b.order) return 0
+                    return a.order < b.order ? -1 : 1
+                })
+            }
+        })
+        //creer le menu à paritr de ce template
+        this.#menuInstance = Menu.buildFromTemplate(mergedMenuItems)
 
     Menu.setApplicationMenu(this.#menuInstance)
     }

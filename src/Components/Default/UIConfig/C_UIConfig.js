@@ -60,11 +60,13 @@ export class UIConfig_Controller extends abstractController{
             submenu:[
                 {
                     label:"Edit config",
+                    order:8,
                     type:"checkbox",
                     checked:this.#configOpen,
                     click: this.showConfig
                 },
                  {
+                    order:7,
                     label:"Demo Page",
                     type:"checkbox",
                     checked:this.#demoOpen,
