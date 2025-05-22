@@ -28,7 +28,7 @@ exports.WindowHandler = class WindowHandler{
     #windowOptions = null
     #windowOptions2 = null
     #models = {}
-
+    #basePath = ""
     
     /**
      * Créer la fen^tre princiaple de l'application
@@ -38,7 +38,8 @@ exports.WindowHandler = class WindowHandler{
      *  [https://www.electronjs.org/docs/latest/api/menu#menutemplate](https://www.electronjs.org/docs/latest/api/menu#menutemplate)
      */
     constructor(windowOptions,windowOptions2){
-
+        // Ajouter le chemin de base de l'application
+        this.#basePath = path.resolve(__dirname, '../../');
         this.#windowOptions = windowOptions
         this.#windowOptions2 = windowOptions2
        
@@ -106,12 +107,15 @@ exports.WindowHandler = class WindowHandler{
 
 
         try {
-            const module = require(`../../Components/${componentPath}/M_${componentName}.${moduleType}`);
-            this.#models[componentId] = {}
-            this.#models[componentId].module = new module[`${componentName}_Model`](componentId,win);
-            this.#models[componentId].path  = componentPath
-            this.#models[componentId].name = componentName
-            this.#models[componentId].moduleType =moduleType
+            const modulePath = path.join(this.#basePath, 'Components', componentPath, `M_${componentName}.${moduleType}`);
+            const module = require(modulePath);
+            this.#models[componentId] = {
+                module: new module[`${componentName}_Model`](componentId,win),
+                path: componentPath,
+                name: componentName,
+                moduleType: moduleType,
+                fullPath: modulePath
+            };
             win.webContents.send('attach-model-ok', componentId);
         } catch (error) {
             win.webContents.send('attach-model-error', componentId, error);
@@ -181,22 +185,17 @@ exports.WindowHandler = class WindowHandler{
      * @memberof WindowHandler
      */
     #handleReloadeRenderer(){
-        // Décharger tous les modèles
         for (const componentId in this.#models) {
-            // Appeler destroy sur l'instance si elle existe
             if (this.#models[componentId].module && this.#models[componentId].module.destroy) {
                 this.#models[componentId].module.destroy();
             }
             
             try {
-                // Construire le chemin du module et le décharger du cache
-                const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
+                const modelPath = this.#models[componentId].fullPath;
                 if (require.cache[modelPath]) {
-                    // Décharger aussi les dépendances du module, sauf les modules natifs
                     const module = require.cache[modelPath];
                     if (module.children) {
                         module.children.forEach(child => {
-                            // Ne pas supprimer les modules natifs comme 'electron'
                             if (!child.path.includes('node_modules')) {
                                 delete require.cache[child.id];
                             }
