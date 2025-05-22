@@ -53,6 +53,7 @@ exports.MenuManager = class MenuManager{
      * @memberof MenuManager
      */
     #rebuildMenu() {
+        //FIXME: il arrive que des soumenu soient en double.
         //parcourir this.#menuItem, si this.#menuItem[x] == this.#menuItem[y] fusionner leur submenu
         const mergedMenuItems = this.#menuItems.reduce((acc, item) => {
             const existingItem = acc.find(i => i.label === item.label)
