@@ -176,6 +176,9 @@ export class abstractController extends HTMLElement {
           sender: {
             reponse: (...args) => {
               resolve(args)
+            },
+            error:(...args) =>{
+              reject(args)
             }
           }
         }
