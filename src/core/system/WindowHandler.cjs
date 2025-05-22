@@ -192,13 +192,16 @@ exports.WindowHandler = class WindowHandler{
                 // Construire le chemin du module et le décharger du cache
                 const modelPath = require.resolve(`../../Components/${this.#models[componentId].path}/M_${this.#models[componentId].name}.${this.#models[componentId].moduleType}`);
                 if (require.cache[modelPath]) {
-                    // Décharger aussi les dépendances du module
+                    // Décharger aussi les dépendances du module, sauf les modules natifs
                     const module = require.cache[modelPath];
-                   /* if (module.children) {
+                    if (module.children) {
                         module.children.forEach(child => {
-                            delete require.cache[child.id];
+                            // Ne pas supprimer les modules natifs comme 'electron'
+                            if (!child.path.includes('node_modules')) {
+                                delete require.cache[child.id];
+                            }
                         });
-                    }*/
+                    }
                     delete require.cache[modelPath];
                 }
             } catch (e) {
