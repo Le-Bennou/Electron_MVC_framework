@@ -384,7 +384,6 @@ export class abstractController extends HTMLElement {
                 resolve(response);
               })
               .catch((error) => {
-                throw new Error(`Le model  n'a pas de fonction ${functionName}`)
                 reject(error);
               })
           });
