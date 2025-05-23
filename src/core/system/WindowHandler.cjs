@@ -1,9 +1,9 @@
-const { app, BrowserWindow,ipcMain } =require('electron')
+const { app, BrowserWindow,ipcMain,globalShortcut } =require('electron')
 const path = require('node:path')
 const  MenuManager = require('./MenuManager.cjs').MenuManager
 
 const  COMPONENTS = require ('./componentsList.js').COMPONENTS
-
+const  DEVMODE = require ('../../../config.js').DEVMODE
 const  fileURLToPath =require( 'url')
 const  dirname = require( 'path');
 /*
@@ -45,7 +45,12 @@ exports.WindowHandler = class WindowHandler{
        
         // Si l'application est lancée, on crée la fenêtre
         app.whenReady().then(() => {
+         
             this.#createWindow()
+            ipcMain.on('relaunch-app', ()=>{
+                app.relaunch()
+                app.quit()
+            })
             ipcMain.on('win-loaded', this.#handleReloadeRenderer.bind(this))
             ipcMain.on('attach-model', this.#attachModel.bind(this))
             ipcMain.on('calling-model', this.#handleCallingModel.bind(this))

@@ -81,6 +81,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   menuEntry:(menuTemplate)=>{
     ipcRenderer.send('menu-entry', menuTemplate);
+  },
+
+  relaunchApp:()=>{
+        ipcRenderer.send('relaunch-app')
   }
 })
 

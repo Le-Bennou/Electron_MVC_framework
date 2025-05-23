@@ -30,7 +30,13 @@ export class Debug_Controller extends abstractController{
             order:10000,
             submenu:[
                     { role: 'reload' },
-                    { role: 'forceReload' },
+                    {
+                        label:"Relaunch App",
+                        accelerator:'Alt+R',
+                        click:()=>{
+                            window.electronAPI.relaunchApp()
+                        }
+                    },
                     { role: 'toggleDevTools' },
                     { type: 'separator' },
                     { role: 'resetZoom' },
