@@ -6,7 +6,7 @@ import { COMPONENTS } from "../componentsList.js";
  * Class abstraite Pour les controlleur
  * 
  * gére le communication avec le Model (proxy) et la vue (proxy)
- *
+ * @template TModel
  * @export
  * @class abstractController
  * @extends {HTMLElement}
@@ -22,6 +22,9 @@ export class abstractController extends HTMLElement {
     }
     return abstractController.#countInstances[name]++;
   }
+
+  /** @type {TModel} */
+  model
 
   #modelLinked = false;
 
