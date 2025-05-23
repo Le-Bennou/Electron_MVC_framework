@@ -3,7 +3,7 @@ const path = require('node:path')
 const  MenuManager = require('./MenuManager.cjs').MenuManager
 
 const  COMPONENTS = require ('./componentsList.js').COMPONENTS
-const  DEVMODE = require ('../../../config.js').DEVMODE
+
 const  fileURLToPath =require( 'url')
 const  dirname = require( 'path');
 /*
