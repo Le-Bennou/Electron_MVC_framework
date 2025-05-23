@@ -178,6 +178,55 @@ label{
     font-size:var(--font-size-M);
 }
 
+dialog{
+    background :var(--bg-surface-a0);
+    padding:var(--spacing-M);
+    border-radius:var(--border-radius-S);
+    border:1px solid var(--bg-primary-a50);
+    box-shadow:2px 2px 5px rgba(0,0,0,0.3);
+    overflow: hidden;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index:100000000000;
+}
+
+dialog h1{
+    margin:0;
+    font-size:var(--font-size-L)
+}
+
+dialog header{
+    margin:0;
+    padding: 0 var(--spacing-M) var(--spacing-XS) var(--spacing-M);
+    width:100%;
+    margin-left:calc(-1 * var(--spacing-M));
+    margin-bottom:var(--spacing-M);
+    border-bottom:1px solid var(--bg-primary-a50);
+} 
+
+dialog main{
+    display:grid;
+    grid-template-columns: 1fr 2fr;
+    gap:var(--spacing-M);
+}
+
+dialog label{
+    text-align:right;
+}
+
+dialog footer{
+    text-align: right;
+    border-top:1px solid var(--bg-primary-a50);
+    margin:0;
+    padding: var(--spacing-M) var(--spacing-M) 0 var(--spacing-M);
+    width:100%;
+    margin-left:calc(-1 * var(--spacing-M));
+    margin-top:var(--spacing-M);
+}
+
+
 /* ========================= les text ================================*/
 
 h1 {
