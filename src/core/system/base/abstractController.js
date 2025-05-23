@@ -34,23 +34,48 @@ export class abstractController extends HTMLElement {
     this.#createModelLink()
     this.#createShadowDOM()
 
-    if (this.setupEventListeners) {
       this.isReady().then(() => {
         this.setupEventListeners()
-      })
-    }
 
-    if (this.setupMessageListeners) {
+    })
+
+   
       this.isReady().then(() => {
         this.setupMessageListeners()
       })
-    }
 
-    if (this.setupMenu) {
+
+    
       this.isReady().then(() => {
         this.setupMenu()
       })
-    }
+  
+  }
+
+  /**
+   * Déclarer ici les écouteurs d'évènements
+   */
+  setupEventListeners(){
+
+  }
+
+  /**
+   * Déclarer ici les écouteur de message
+   */
+  setupMessageListeners(){
+
+  }
+
+  /**Déclarer ici les entrées dans le menu */
+  setupMenu(){
+
+  }
+
+  /**
+   * Applé quand la vue et le model sont opérationnels
+   */
+  onReady(){
+
   }
 
 
