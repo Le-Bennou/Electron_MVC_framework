@@ -7,7 +7,7 @@ exports.Debug_Model= class Debug_Model extends AbstractModel{
         const error = new Error();
         const stack = error.stack.split('\n');
         // On cherche la première ligne qui n'est pas dans ce fichier
-        const callerLine = stack.find(line => !line.includes('M_Debug.js') && line.includes('at'));
+        const callerLine = stack.find(line => !line.includes('M_Debug.cjs') && !line.includes('M_Debug.cjs') &&line.includes('at'));
         if (callerLine) {
             // Format typique: "at functionName (file:line:column)"
             const match = callerLine.match(/at (?:(.+?) \()?(.+?):(\d+):(\d+)\)?/);
