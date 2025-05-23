@@ -5,5 +5,5 @@
 /*placeholder*/
 :host{
     display:block;
-    outline:1px dashed rgba(0,0,0,0.3);
+    outline:1px dashed var(--text-surface-a0)
 }
