@@ -83,7 +83,7 @@ export class Debug_Controller extends abstractController{
 
 
     const locationStyle = 'color: lightblue; font-size: 0.8em; text-decoration: none; cursor: pointer;margin-bottom-5px';
-    const shortPath = caller ? caller.file.replace(/^.*?\/src\//, '').replace(/\//gm,'\\') : '';
+    const shortPath = caller ? caller.file.replace(/^.*?[\/|\\]src[\/|\\]/, '').replace(/\//gm,'\\') : '';
     
 
     const iconStyle = `
