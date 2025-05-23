@@ -166,7 +166,7 @@ export class abstractController extends HTMLElement {
       }
       const message = e.detail.message
       const sender = e.detail.sender
-      callback(message, sender)
+      callback.bind(this)(message, sender)
     })
   }
 
