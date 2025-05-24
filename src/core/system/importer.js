@@ -9,6 +9,7 @@ const allHandler = {
          return true
 	},
 	get: (obj, prop) => {
+       
 		let os = [];
 		obj.forEach(o => {
             o = new Proxy(o, elementHandler)
@@ -26,6 +27,8 @@ Object.defineProperty(NodeList.prototype, 'all', {
 	},
 });
 
+globalThis.appReady = false
+let countComponentReady = COMPONENTS.length
 COMPONENTS.forEach(async component => {
     const {name,path} = component;
     const componentPath = path.replace(/\\/g, '/');
@@ -47,6 +50,10 @@ COMPONENTS.forEach(async component => {
             const controller = module[`${name}_Controller`]
             //definir le custom element
             customElements.define(`${PREFIX}-${name.toLowerCase()}`, controller);
+            countComponentReady--
+            if(countComponentReady == 0){
+                globalThis.appReady = true
+            }
         })
         .catch(error => {
             console.error(`Error loading controller for ${name}:`, error);
