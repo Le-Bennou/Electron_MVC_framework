@@ -1,4 +1,5 @@
 import { COMPONENTS } from "../componentsList.js";
+import {MessageSystem} from "./MessageSystem.js"
 
 // Sauvegarde de la fonction console.log originale
 
@@ -12,9 +13,12 @@ import { COMPONENTS } from "../componentsList.js";
  * @extends {HTMLElement}
  */
 export class abstractController extends HTMLElement {
-
+  
   static #countInstances = [];                          // compte les instance pour crée callId
-  static #anonymousCounter = 0;                       // compte les function anonye des menu pour uniqId
+  static #anonymousCounter = 0;                        // compte les function anonye des menu pour uniqId
+  
+  #removeListeners = [];
+  #messageSystem = new MessageSystem()
 
   static getNewInstance(name) {
     if (!abstractController.#countInstances[name]) {
@@ -28,6 +32,8 @@ export class abstractController extends HTMLElement {
 
   #modelLinked = false;
 
+
+
   constructor() {
     super();
     this._name = this.constructor.name.replace('_Controller', '');
@@ -37,21 +43,7 @@ export class abstractController extends HTMLElement {
     this.#createModelLink()
     this.#createShadowDOM()
 
-      this.isReady().then(() => {
-        this.setupEventListeners()
-
-    })
-
-   
-      this.isReady().then(() => {
-        this.setupMessageListeners()
-      })
-
-
     
-      this.isReady().then(() => {
-        this.setupMenu()
-      })
   
   }
 
@@ -84,11 +76,22 @@ export class abstractController extends HTMLElement {
 
 
   connectedCallback() {
-    if (this.onReady) {
+    requestIdleCallback(()=>{
       this.isReady().then(() => {
-        this.onReady()
-      })
-    }
+           this.setupMenu()
+            this.onReady()
+             this.setupEventListeners()
+             this.setupMessageListeners()
+          })
+
+       
+    })
+    
+  }
+
+  disconnectedCallback() {
+    this.#removeListeners.forEach(remove => remove());
+    this.#removeListeners = [];
   }
 
   get name() {
@@ -153,7 +156,10 @@ export class abstractController extends HTMLElement {
    * @param {function} callback 
    */
   addMessageListener(type, callback) {
-    document.addEventListener(type, (e) => {
+    const removeListener = this.#messageSystem.ecouteMessage(this, type, callback);
+    this.#removeListeners.push(removeListener);
+    return removeListener;
+    /*document.addEventListener(type, (e) => {
       if (e.detail.destinataires) {
         let itsMe = false
         const destinataires = e.detail.destinataires
@@ -170,7 +176,7 @@ export class abstractController extends HTMLElement {
       const message = e.detail.message
       const sender = e.detail.sender
       callback.bind(this)(message, sender)
-    })
+    })*/
   }
 
 
@@ -194,8 +200,9 @@ export class abstractController extends HTMLElement {
    * })
    */
   sendMessage(infos) {
-    return new Promise((resolve, reject) => {
-      if (!infos.type) throw new Error('Le message doit avoir un type')
+    if (!infos.type) throw new Error('Le message doit avoir un type')
+   /* const message = new Promise((resolve, reject) => { 
+      
       document.dispatchEvent(new CustomEvent(infos.type, {
         detail:
         {
@@ -211,8 +218,8 @@ export class abstractController extends HTMLElement {
           }
         }
       }))
-    })
-
+    })*/
+  return this.#messageSystem.sendMessage(infos);
   }
 
 
@@ -461,7 +468,8 @@ export class abstractController extends HTMLElement {
   isReady() {
     return new Promise((resolve, reject) => {
       const checkReady = () => {
-        if (this.view && this.#modelLinked) {
+        if (globalThis.appReady && this.view && this.#modelLinked) {
+
           resolve();
         } else {
           setTimeout(checkReady, 100); // Vérifie toutes les 100ms
