@@ -159,7 +159,7 @@ export class MessageSystem {
       if (selector === 'parent') {
         const sender = this.#pendingMessages.find(msg => !msg.processed)?.sender;
         if (!sender) return false;
-        
+        if(sender==this) return false
         // Vérifier dans le DOM standard
         if (element.contains(sender)) {
           return true;
