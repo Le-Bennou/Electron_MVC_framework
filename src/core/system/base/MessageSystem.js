@@ -18,13 +18,14 @@ export class MessageSystem {
   }
 
   // Méthode pour envoyer un message
-  sendMessage({type, message, destinataire = null}) {
+  sendMessage({type, message, destinataire = null}, sender) {
     return new Promise((resolve, reject) => {
       const messageData = {
         id: crypto.randomUUID(),
         type,
         message,
         destinataire,
+        sender,
         timestamp: Date.now(),
         resolve,
         reject,
@@ -144,16 +145,41 @@ export class MessageSystem {
 
   // Vérifier si l'élément correspond aux critères de destination
   #isValidDestination(element, destinataire) {
+
     if (Array.isArray(destinataire)) {
       return destinataire.some(dest => this.#isItMe(element, dest));
     } else {
-      return this.#isItMe(element, dest);
+      return this.#isItMe(element, destinataire);
     }
   }
 
   // Méthode pour vérifier si l'élément correspond au sélecteur
   #isItMe(element, selector) {
     try {
+      if (selector === 'parent') {
+        const sender = this.#pendingMessages.find(msg => !msg.processed)?.sender;
+        if (!sender) return false;
+        
+        // Vérifier dans le DOM standard
+        if (element.contains(sender)) {
+          return true;
+        }
+        
+        // Vérifier dans le shadowDOM
+        let currentElement = sender;
+        while (currentElement) {
+          if (currentElement === element) {
+            return true;
+          }
+          const root = currentElement.getRootNode();
+          if (root instanceof ShadowRoot) {
+            currentElement = root.host;
+          } else {
+            break;
+          }
+        }
+        return false;
+      }
       return element.matches(selector);
     } catch (error) {
       console.warn(`Sélecteur invalide: ${selector}`, error);

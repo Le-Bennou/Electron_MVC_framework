@@ -4,6 +4,10 @@
     font-family: var(--font-family);
 }
 
+:host{
+    --colored:var(--bg-primary-a0);
+}
+
 .primary-a0 {
     --colored : var(--text-primary-a0);
     background: var(--bg-primary-a0);
