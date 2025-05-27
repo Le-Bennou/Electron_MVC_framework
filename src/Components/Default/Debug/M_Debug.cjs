@@ -43,6 +43,8 @@ exports.Debug_Model= class Debug_Model extends AbstractModel{
         return functions;
     }
 
+
+    //TODO: revoir sendMessageToController pour l'adpater au nouveau systeme de message
     rerouteConsole(){
         console = {
              warn: (...args) => {
