@@ -1,13 +1,16 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+
+
 ipcRenderer.on('calling-menuEvent', (_, eventName) => {
     document.dispatchEvent(new CustomEvent(eventName))
 })
 
 ipcRenderer.on('model-sendMessage', (_, eventName,componentId,message) => {
     document.dispatchEvent(new CustomEvent(eventName,{detail:{
-        destinataires:componentId,
-        message:message
+
+        message:message,
+        destinataires:componentId
     }}))
 })
 

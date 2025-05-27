@@ -55,17 +55,17 @@ export class Debug_Controller extends abstractController{
     }
 
     setupEventListeners(){
-        this.addMessageListener('console-warn',(message)=>{
+        this.addModelMessageListener('console-warn',(message)=>{
            //const args = JSON.parse(message);
             console.warn.apply(console,  this.#formatConsoleMessage('warn', message));
         })
 
-        this.addMessageListener('console-log',(message)=>{
+        this.addModelMessageListener('console-log',(message)=>{
            //const args = JSON.parse(message);
             console.log.apply(console,  this.#formatConsoleMessage('log', message));
         })
 
-        this.addMessageListener('console-error',(message)=>{
+        this.addModelMessageListener('console-error',(message)=>{
            //const args = JSON.parse(message);
             console.error.apply(console,  this.#formatConsoleMessage('error', message));
         })

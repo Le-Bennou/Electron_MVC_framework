@@ -1,6 +1,8 @@
 import { COMPONENTS } from "../componentsList.js";
 import {MessageSystem} from "./MessageSystem.js"
 
+
+globalThis.test = "coucou"
 // Sauvegarde de la fonction console.log originale
 
 /**
@@ -16,9 +18,11 @@ export class abstractController extends HTMLElement {
   
   static #countInstances = [];                          // compte les instance pour crée callId
   static #anonymousCounter = 0;                        // compte les function anonye des menu pour uniqId
-  
+
+
+
   #removeListeners = [];
-  #messageSystem = new MessageSystem()
+  static #messageSystem = new MessageSystem()
 
   static getNewInstance(name) {
     if (!abstractController.#countInstances[name]) {
@@ -43,6 +47,7 @@ export class abstractController extends HTMLElement {
     this.#createModelLink()
     this.#createShadowDOM()
 
+  
     
   
   }
@@ -156,30 +161,19 @@ export class abstractController extends HTMLElement {
    * @param {function} callback 
    */
   addMessageListener(type, callback) {
-    const removeListener = this.#messageSystem.ecouteMessage(this, type, callback);
+    const removeListener = abstractController.#messageSystem.ecouteMessage(this, type, callback);
     this.#removeListeners.push(removeListener);
     return removeListener;
-    /*document.addEventListener(type, (e) => {
-      if (e.detail.destinataires) {
-        let itsMe = false
-        const destinataires = e.detail.destinataires
-
-        if (Array.isArray(destinataires)) {
-          destinataires.forEach(dest => {
-            if (this.#isItMe(dest)) itsMe = true
-          })
-        } else {
-          if (this.#isItMe(destinataires)) itsMe = true
-        }
-        if (!itsMe) return
-      }
-      const message = e.detail.message
-      const sender = e.detail.sender
-      callback.bind(this)(message, sender)
-    })*/
   }
 
-
+  addModelMessageListener(type, callback) {
+    document.addEventListener(type, (event) => {
+        const {message,destinataires} = event.detail;
+        if (this.#isItMe(destinataires)) {
+          callback.bind(this)(message);
+        }
+    })
+  }
 
   /**
    * Envoie un message à d'autres composants.
@@ -201,25 +195,7 @@ export class abstractController extends HTMLElement {
    */
   sendMessage(infos) {
     if (!infos.type) throw new Error('Le message doit avoir un type')
-   /* const message = new Promise((resolve, reject) => { 
-      
-      document.dispatchEvent(new CustomEvent(infos.type, {
-        detail:
-        {
-          message: infos.message,
-          destinataires: infos.destinataires,
-          sender: {
-            reponse: (...args) => {
-              resolve(...args)
-            },
-            error: (...args) => {
-              reject(...args)
-            }
-          }
-        }
-      }))
-    })*/
-  return this.#messageSystem.sendMessage(infos,this);
+  return abstractController.#messageSystem.sendMessage(infos,this);
   }
 
 
