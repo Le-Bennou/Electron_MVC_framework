@@ -146,6 +146,11 @@ export class MessageSystem {
 
   // Vérifier si l'élément correspond aux critères de destination
   #isValidDestination(element, destinataire) {
+    // Ignorer si l'élément est le sender
+    
+    if (element === sender) {
+      return false;
+    }
 
     if (Array.isArray(destinataire)) {
       return destinataire.some(dest => this.#isItMe(element, dest));
