@@ -68,7 +68,25 @@ exports.MenuManager = class MenuManager{
                     existingItem.order = Math.min(existingItem.order, item.order)
                 }
 
-                existingItem.submenu.push(...item.submenu)
+
+                //éviter les doublons dans submenu
+                if (!existingItem.submenu) {
+                    existingItem.submenu = []
+                }
+            item.submenu.forEach(subItem => {
+                    // Vérifier si le sous-menu existe déjà
+                    const existingSubItem = existingItem.submenu.find(s => s.label === subItem.label)
+                    if (!existingSubItem) {
+                        existingItem.submenu.push(subItem)
+                    } else {
+                        // Fusionner les sous-menus existants
+                        existingSubItem.order = Math.min(existingSubItem.order, subItem.order || 1000000)
+                        if (subItem.click) {
+                            existingSubItem.click = subItem.click
+                        }
+                    }
+                })
+              //  existingItem.submenu.push(...item.submenu)
             
             } else {
                 acc.push(item)

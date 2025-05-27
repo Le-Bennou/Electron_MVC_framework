@@ -39,6 +39,7 @@ export class MessageSystem {
       this.#processMessage(messageData);
       
       // Si le message n'a pas été traité après un délai, on peut le garder en attente
+      //TODO: effacer les message en attente au bout d'un certain temps
       setTimeout(() => {
         if (!messageData.processed) {
           console.log(`Message ${messageData.id} en attente pour le type "${type}"`);
