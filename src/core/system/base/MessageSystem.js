@@ -82,7 +82,7 @@ export class MessageSystem {
 
     for (const {element, handler} of listeners) {
       // Vérifier si c'est le bon destinataire
-      if (messageData.destinataire && !this.#isValidDestination(element, messageData.destinataire)) {
+      if (messageData.destinataire && !this.#isValidDestination(element,messageData.destinataire,messageData.sender)) {
         continue;
       }
 
@@ -145,7 +145,7 @@ export class MessageSystem {
   }
 
   // Vérifier si l'élément correspond aux critères de destination
-  #isValidDestination(element, destinataire) {
+  #isValidDestination(element, destinataire,sender) {
     // Ignorer si l'élément est le sender
     
     if (element === sender) {
@@ -153,17 +153,18 @@ export class MessageSystem {
     }
 
     if (Array.isArray(destinataire)) {
-      return destinataire.some(dest => this.#isItMe(element, dest));
+      return destinataire.some(dest => this.#isItMe(element, dest,sender));
     } else {
-      return this.#isItMe(element, destinataire);
+      return this.#isItMe(element, destinataire,sender);
     }
   }
 
   // Méthode pour vérifier si l'élément correspond au sélecteur
-  #isItMe(element, selector) {
+  #isItMe(element, selector,sender) {
+
     try {
       if (selector === 'parent') {
-        const sender = this.#pendingMessages.find(msg => !msg.processed)?.sender;
+       // const sender = this.#pendingMessages.find(msg => !msg.processed)?.sender;
         if (!sender) return false;
         if(sender==this) return false
         // Vérifier dans le DOM standard
