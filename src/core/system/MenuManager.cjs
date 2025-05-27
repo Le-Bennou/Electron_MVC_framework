@@ -75,7 +75,11 @@ exports.MenuManager = class MenuManager{
                 }
             item.submenu.forEach(subItem => {
                     // Vérifier si le sous-menu existe déjà
-                    const existingSubItem = existingItem.submenu.find(s => s.label === subItem.label && s.type!="separator" && subItem.type!="separator")
+                     if (subItem.type === 'separator') {
+                    existingItem.submenu.push(subItem);
+                    return;
+                }
+                    const existingSubItem = existingItem.submenu.find(s => s.label === subItem.label)
                     if (!existingSubItem) {
                         existingItem.submenu.push(subItem)
                     } else {
